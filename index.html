@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>beibinyang - 个人主页</title>
+    <title>{{ github_info.name }} - 个人主页</title>
     <!-- 网页图标，使用用户头像并确保是圆形的 -->
-    
-    <link rel="icon" href="https://avatars.githubusercontent.com/u/153931666?v=4" type="image/png">
+    {% if github_info.avatar_url %}
+    <link rel="icon" href="{{ github_info.avatar_url }}" type="image/png">
     <!-- 使用SVG过滤器确保头像显示为圆形 -->
     <svg width="0" height="0" style="position:absolute;">
         <filter id="roundAvatar">
@@ -20,7 +20,7 @@
             filter: url(#roundAvatar);
         }
     </style>
-    
+    {% endif %}
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -158,15 +158,15 @@
                 extend: {
                     colors: {
                         primary: {
-                            DEFAULT: '#6a11cb',
-                            dark: '#a855f7'
+                            DEFAULT: '{{ config.theme.primary_color }}',
+                            dark: '{{ config.theme.dark_primary_color }}'
                         },
                         secondary: {
-                            DEFAULT: '#2575fc',
-                            dark: '#60a5fa'
+                            DEFAULT: '{{ config.theme.secondary_color }}',
+                            dark: '{{ config.theme.dark_secondary_color }}'
                         },
-                        'primary-dark': '#a855f7',
-                        'secondary-dark': '#60a5fa'
+                        'primary-dark': '{{ config.theme.dark_primary_color }}',
+                        'secondary-dark': '{{ config.theme.dark_secondary_color }}'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -196,7 +196,7 @@
                 -webkit-text-fill-color: transparent;
             }
             .bg-gradient-custom {
-                background: linear-gradient(135deg, #6a11cb, #2575fc);
+                background: linear-gradient(135deg, {{ config.theme.primary_color }}, {{ config.theme.secondary_color }});
             }
             .card-hover {
                 transition: all 0.3s ease;
@@ -222,7 +222,7 @@
                 left: 0;
                 right: 0;
                 height: 1px;
-                background: linear-gradient(90deg, transparent, #6a11cb, transparent);
+                background: linear-gradient(90deg, transparent, {{ config.theme.primary_color }}, transparent);
                 animation: border-glow 4s ease-in-out infinite;
             }
             .glass-panel::before {
@@ -232,15 +232,15 @@
                 left: 0;
                 right: 0;
                 height: 1px;
-                background: linear-gradient(90deg, transparent, #2575fc, transparent);
+                background: linear-gradient(90deg, transparent, {{ config.theme.secondary_color }}, transparent);
                 animation: border-glow 4s ease-in-out infinite reverse;
             }
             /* 深色模式下的边框光效 */
             .dark .glass-panel::after {
-                background: linear-gradient(90deg, transparent, #a855f7, transparent);
+                background: linear-gradient(90deg, transparent, {{ config.theme.dark_primary_color }}, transparent);
             }
             .dark .glass-panel::before {
-                background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+                background: linear-gradient(90deg, transparent, {{ config.theme.dark_secondary_color }}, transparent);
             }
             .dark .glass-panel {
                 background: rgba(17, 24, 39, 0.6);
@@ -260,37 +260,68 @@
         
         /* 背景样式 */
         body {
-            
+            {% if background_exists %}
+            background-color: #121212;
+            {% endif %}
         }
         
         /* 在没有背景图片时使用默认背景色 */
-        
+        {% if not background_exists %}
         body {
             background-color: #f9fafb; /* bg-gray-50 的实际颜色值 */
         }
         body.dark {
             background-color: #111827; /* bg-gray-900 的实际颜色值 */
         }
-        
+        {% endif %}
         
         /* 背景图片容器 */
         .bg-container {
-            
+            {% if background_exists %}
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            {% endif %}
         }
         
         /* 背景图片 */
         .bg-image {
-            
+            {% if background_exists %}
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ background_path }}');
+            background-size: cover;
+            background-position: center;
+            filter: blur({{ config.background.blur }}px);
+            transform: scale(1.1); /* 略微放大以避免边缘出现空白 */
+            {% endif %}
         }
         
         /* 背景遮罩 */
         .bg-overlay {
-            
+            {% if background_exists %}
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: {{ config.background.overlay_color }};
+            opacity: {{ config.background.overlay_opacity }};
+            {% endif %}
         }
         
         /* 深色模式下的背景遮罩 */
         .dark .bg-overlay {
-            
+            {% if background_exists %}
+            background-color: {{ config.background.dark_overlay_color }};
+            {% endif %}
         }
         
         /* 动画样式 */
@@ -342,14 +373,14 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <!-- 顶栏左上角显示头像和用户名 -->
             <div class="flex items-center space-x-3">
-                
+                {% if github_info.avatar_url %}
                 <img 
-                    src="https://avatars.githubusercontent.com/u/153931666?v=4" 
-                    alt="beibinyang" 
+                    src="{{ github_info.avatar_url }}" 
+                    alt="{{ github_info.name }}" 
                     class="w-8 h-8 rounded-full border-2 border-white dark:border-gray-700 shadow-sm"
                 >
-                
-                <span class="font-bold text-lg">beibinyang</span>
+                {% endif %}
+                <span class="font-bold text-lg">{{ github_info.name }}</span>
             </div>
             <div class="flex items-center space-x-4">
                 <!-- 极简模式开关 -->
@@ -363,7 +394,7 @@
                     <i class="fa-solid fa-moon dark:hidden text-gray-700"></i>
                     <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
                 </button>
-                <a href="https://github.com/beibinyang" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <a href="{{ config.github_url }}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                     <i class="fa-brands fa-github text-xl"></i>
                 </a>
             </div>
@@ -379,17 +410,17 @@
                     <!-- 头像 -->
                     <div class="flex justify-center mb-6">
                         <img 
-                            src="https://avatars.githubusercontent.com/u/153931666?v=4" 
-                            alt="beibinyang" 
+                            src="{{ github_info.avatar_url }}" 
+                            alt="{{ github_info.name }}" 
                             class="w-36 h-36 rounded-full border-4 border-white dark:border-gray-700 shadow-lg avatar-glow"
                         >
                     </div>
                     <!-- 基本信息 -->
                     <div class="text-center mb-6">
-                        <h1 class="text-2xl font-bold mb-2">beibinyang</h1>
-                        <p class="text-gray-600 dark:text-gray-400 mb-4">Python Developer</p>
+                        <h1 class="text-2xl font-bold mb-2">{{ github_info.name }}</h1>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">{{ github_info.bio }}</p>
                         <a 
-                            href="https://github.com/beibinyang" 
+                            href="{{ config.github_url }}" 
                             target="_blank" 
                             rel="noopener noreferrer" 
                             class="inline-flex items-center px-4 py-2 rounded-full bg-gradient-custom text-white font-medium hover:opacity-90 transition-opacity"
@@ -401,11 +432,11 @@
                     <!-- 统计信息 -->
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 text-center">
-                            <div class="text-2xl font-bold text-primary dark:text-primary-dark mb-1">63</div>
+                            <div class="text-2xl font-bold text-primary dark:text-primary-dark mb-1">{{ github_info.total_repos }}</div>
                             <div class="text-sm text-gray-600 dark:text-gray-400">总仓库数</div>
                         </div>
                         <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 text-center">
-                            <div class="text-2xl font-bold text-secondary dark:text-secondary-dark mb-1">0</div>
+                            <div class="text-2xl font-bold text-secondary dark:text-secondary-dark mb-1">{{ github_info.total_stars }}</div>
                             <div class="text-sm text-gray-600 dark:text-gray-400">总 Stars</div>
                         </div>
                     </div>
@@ -413,29 +444,31 @@
                 <div class="mt-6">
                     <h3 class="text-lg font-semibold mb-3">技术栈</h3>
                     <div class="flex flex-wrap gap-2">
-                        
-                            
-                                <span class="px-3 py-1 rounded-full text-sm flex items-center text-white dark:text-white" style="background-color: #2575fc;">
+                        {% if github_info and github_info.tech_stack %}
+                            {% for tech in github_info.tech_stack %}
+                                <span class="px-3 py-1 rounded-full text-sm flex items-center text-white dark:text-white" style="background-color: {{ tech.color }};">
                                     <i class="fa-solid fa-code mr-1 tech-icon"></i>
-                                    JavaScript
+                                    {{ tech.name }}
                                 </span>
-                            
-                                <span class="px-3 py-1 rounded-full text-sm flex items-center text-white dark:text-white" style="background-color: #1f63d6;">
-                                    <i class="fa-solid fa-code mr-1 tech-icon"></i>
-                                    TypeScript
-                                </span>
-                            
-                                <span class="px-3 py-1 rounded-full text-sm flex items-center text-white dark:text-white" style="background-color: #0e2e64;">
-                                    <i class="fa-solid fa-code mr-1 tech-icon"></i>
-                                    HTML/CSS
-                                </span>
-                            
-                                <span class="px-3 py-1 rounded-full text-sm flex items-center text-white dark:text-white" style="background-color: gray;">
-                                    <i class="fa-solid fa-code mr-1 tech-icon"></i>
-                                    Astro
-                                </span>
-                            
-                        
+                            {% endfor %}
+                        {% else %}
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm flex items-center">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                            Python
+                            </span>
+                            <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm flex items-center">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                            JavaScript
+                            </span>
+                            <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-sm flex items-center">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                            HTML/CSS
+                            </span>
+                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm flex items-center">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                            Flask
+                            </span>
+                        {% endif %}
                     </div>
                 </div>
                 </div>
@@ -458,14 +491,7 @@
                         个人介绍
                     </h2>
                     <div class="max-w-none" id="readme-content">
-                        <h1 id="_1">个人主页</h1>
-<p>欢迎来到我的个人主页！这是我展示自己的空间。</p>
-<h1 id="_2">关于我</h1>
-<p>北冰洋</p>
-<h1 id="_3">项目</h1>
-<p>你可以在这里查看我在GitHub上的最新项目和贡献。</p>
-<h1 id="_4">联系方式</h1>
-<p>如果你对我的项目感兴趣或有任何问题，欢迎通过GitHub联系我。</p>
+                        {{ github_info.readme_content|safe }}
                     </div>
                 </div>
 
@@ -476,84 +502,29 @@
                         最近项目
                     </h2>
                     <div class="space-y-4">
-                        
-                            
-                                <a href="https://github.com/beibinyang/NotionNext" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
+                        {% if github_info.recent_repos %}
+                            {% for repo in github_info.recent_repos %}
+                                <a href="{{ repo.html_url }}" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">NotionNext</h3>
+                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">{{ repo.name }}</h3>
                                         <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                                             <i class="fa-solid fa-star mr-1"></i>
-                                            0
+                                            {{ repo.stargazers_count }}
                                         </span>
                                     </div>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">使用 NextJS + Notion API 实现的，支持多种部署方案的静态博客，无需服务器、零门槛搭建网站，为Notion和所有创作者设计。 (A static blog built with NextJS and Notion API, supporting multiple deployment options. No server required, zero threshold to set up a website. Designed for Notion and all creators.)</p>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">{{ repo.description }}</p>
                                     <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                                        <span>JavaScript</span>
-                                        <span class="update-date" data-date="2026-07-27T01:50:50Z">更新于 2026-07-27</span>
+                                        <span>{{ repo.language }}</span>
+                                        <span class="update-date" data-date="{{ repo.pushed_at }}">更新于 {{ repo.pushed_at[:10] if repo.pushed_at else '未知' }}</span>
                                     </div>
                                 </a>
-                            
-                                <a href="https://github.com/beibinyang/2025-blog-public" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">2025-blog-public</h3>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                                            <i class="fa-solid fa-star mr-1"></i>
-                                            0
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">开源blog，让你不写代码就开始写 blog，管理 blog 内容。无需服务器，无需费用。</p>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                                        <span>TypeScript</span>
-                                        <span class="update-date" data-date="2026-07-26T14:44:10Z">更新于 2026-07-26</span>
-                                    </div>
-                                </a>
-                            
-                                <a href="https://github.com/beibinyang/CloudFlare-ImgBed" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">CloudFlare-ImgBed</h3>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                                            <i class="fa-solid fa-star mr-1"></i>
-                                            0
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">Open-source file hosting solution based on CloudFlare  (Image hosting/File storage/Cloud drive) / 基于 CloudFlare 的开源文件托管解决方案（图床/文件床/网盘）</p>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                                        <span>JavaScript</span>
-                                        <span class="update-date" data-date="2026-07-25T08:55:53Z">更新于 2026-07-25</span>
-                                    </div>
-                                </a>
-                            
-                                <a href="https://github.com/beibinyang/docsify" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">docsify</h3>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                                            <i class="fa-solid fa-star mr-1"></i>
-                                            0
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">None</p>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                                        <span>HTML</span>
-                                        <span class="update-date" data-date="2026-07-24T08:16:25Z">更新于 2026-07-24</span>
-                                    </div>
-                                </a>
-                            
-                                <a href="https://github.com/beibinyang/Solara" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">Solara</h3>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                                            <i class="fa-solid fa-star mr-1"></i>
-                                            0
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">一个极简风格的基于免费API的音乐播放器</p>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                                        <span>None</span>
-                                        <span class="update-date" data-date="2026-07-23T16:24:56Z">更新于 2026-07-23</span>
-                                    </div>
-                                </a>
-                            
-                        
+                            {% endfor %}
+                        {% else %}
+                            <div class="p-6 text-center text-gray-500 dark:text-gray-400">
+                                    <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
+                                    <p>暂无项目数据</p>
+                                </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -563,18 +534,34 @@
     <!-- 页脚 -->
     <footer class="glass-panel bg-white/30 dark:bg-gray-800/30 shadow-inner py-6">
         <div class="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400">
-            <p>© 2026 beibinyang. <a href="https://github.com/SRInternet/Home_Page/" target="_blank">个人主页</a>由 Flask + Tailwind CSS 驱动。</p>
+            <p>© {{ now.year }} {{ github_info.name }}. <a href="https://github.com/SRInternet/Home_Page/" target="_blank">个人主页</a>由 Flask + Tailwind CSS 驱动。</p>
             <div class="mt-3 space-x-4">
                 <!-- 联系方式图标，仅在配置了有效URL时显示 -->
-                
-                <a href="https://qm.qq.com/q/VbRpPLiDO8" target="_blank" rel="noopener noreferrer" class="hover:text-primary dark:hover:text-primary-dark transition-colors">
+                {% if config.contact.qq and config.contact.qq != '' %}
+                <a href="{{ config.contact.qq }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary dark:hover:text-primary-dark transition-colors">
                     <i class="fa-brands fa-qq"></i>
                 </a>
-                
-                
-                
-                
-                
+                {% endif %}
+                {% if config.contact.wechat and config.contact.wechat != '' %}
+                <a href="{{ config.contact.wechat }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary dark:hover:text-primary-dark transition-colors">
+                    <i class="fa-brands fa-weixin"></i>
+                </a>
+                {% endif %}
+                {% if config.contact.bilibili and config.contact.bilibili != '' %}
+                <a href="{{ config.contact.bilibili }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary dark:hover:text-primary-dark transition-colors">
+                    <i class="fa-brands fa-bilibili"></i>
+                </a>
+                {% endif %}
+                {% if config.contact.douyin and config.contact.douyin != '' %}
+                <a href="{{ config.contact.douyin }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary dark:hover:text-primary-dark transition-colors">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+                {% endif %}
+                {% if config.contact.xiaohongshu and config.contact.xiaohongshu != '' %}
+                <a href="{{ config.contact.xiaohongshu }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary dark:hover:text-primary-dark transition-colors">
+                    <i class="fa-solid fa-book"></i>
+                </a>
+                {% endif %}
             </div>
         </div>
     </footer>
@@ -591,7 +578,7 @@
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             
             // 根据配置设置初始主题
-            const configDarkMode = 'auto';
+            const configDarkMode = '{{ config.dark_mode }}';
             if (savedTheme) {
                 htmlElement.classList.toggle('dark', savedTheme === 'dark');
             } else if (configDarkMode === 'auto') {
@@ -654,7 +641,7 @@
                     // 恢复背景模糊效果
                     if (bgImage) {
                         bgImage.style.transition = 'filter 0.5s ease';
-                        bgImage.style.filter = 'blur(4px)';
+                        bgImage.style.filter = 'blur({{ config.background.blur }}px)';
                     }
                     
                     // 移除极简模式按钮的激活样式
@@ -675,8 +662,8 @@
                         labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
                         datasets: [{
                             label: '代码提交',
-                            data: [0, 0, 0, 0, 9, 9, 9, 0, 0, 0, 0, 0],
-                            borderColor: isDark ? '#a855f7' : '#6a11cb',
+                            data: {{ github_info.activity_data | tojson }},
+                            borderColor: isDark ? '{{ config.theme.dark_primary_color }}' : '{{ config.theme.primary_color }}',
                             backgroundColor: isDark ? 'rgba(168, 85, 247, 0.1)' : 'rgba(106, 17, 203, 0.1)',
                             tension: 0.4,
                             fill: true
