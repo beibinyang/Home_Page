@@ -6,7 +6,7 @@
     <title>beibinyang - 个人主页</title>
     <!-- 网页图标，使用用户头像并确保是圆形的 -->
     
-    <link rel="icon" href="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/153931666%3Fv%3D4&w=100&h=100" type="image/png">
+    <link rel="icon" href="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/153931666%3Fv%3D4&w=200&h=200" type="image/png">
     <!-- 使用SVG过滤器确保头像显示为圆形 -->
     <svg width="0" height="0" style="position:absolute;">
         <filter id="roundAvatar">
@@ -16,6 +16,46 @@
         </filter>
     </svg>
     <style>
+        /* ===== 背景图片容器 ===== */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        /* ===== 背景图片 ===== */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px);
+            transform: scale(1.1);
+        }
+        
+        /* ===== 背景遮罩 ===== */
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(243, 244, 246, 0.6);
+        }
+        
+        /* ===== 深色模式下的背景遮罩 ===== */
+        .dark .bg-overlay {
+            background-color: rgba(18, 18, 18, 0.8);
+        }
+        
         link[rel="icon"] {
             filter: url(#roundAvatar);
         }
@@ -272,44 +312,25 @@
             background-color: #111827; /* bg-gray-900 的实际颜色值 */
         }
         
-        /* ===== 修复：背景图片容器 ===== */
+        
+        /* 背景图片容器 */
         .bg-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            
         }
         
-        /* ===== 修复：背景图片 ===== */
+        /* 背景图片 */
         .bg-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('background.jpg');
-            background-size: cover;
-            background-position: center;
-            filter: blur(4px);
-            transform: scale(1.1);
+            
         }
         
-        /* ===== 修复：背景遮罩 ===== */
+        /* 背景遮罩 */
         .bg-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(243, 244, 246, 0.6);
+            
         }
         
-        /* ===== 修复：深色模式下的背景遮罩 ===== */
+        /* 深色模式下的背景遮罩 */
         .dark .bg-overlay {
-            background-color: rgba(18, 18, 18, 0.8);
+            
         }
         
         /* 动画样式 */
@@ -420,7 +441,7 @@
                     <!-- 统计信息 -->
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 text-center">
-                            <div class="text-2xl font-bold text-primary dark:text-primary-dark mb-1">63</div>
+                            <div class="text-2xl font-bold text-primary dark:text-primary-dark mb-1">62</div>
                             <div class="text-sm text-gray-600 dark:text-gray-400">总仓库数</div>
                         </div>
                         <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 text-center">
@@ -528,7 +549,37 @@
                                     <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">My self-introduction.</p>
                                     <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
                                         <span>HTML</span>
-                                        <span class="update-date" data-date="2026-07-27T07:33:35Z">更新于 2026-07-27</span>
+                                        <span class="update-date" data-date="2026-07-27T12:18:34Z">更新于 2026-07-27</span>
+                                    </div>
+                                </a>
+                            
+                                <a href="https://github.com/beibinyang/beizi" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">beizi</h3>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                                            <i class="fa-solid fa-star mr-1"></i>
+                                            0
+                                        </span>
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">None</p>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                                        <span>None</span>
+                                        <span class="update-date" data-date="2026-07-27T09:17:58Z">更新于 2026-07-27</span>
+                                    </div>
+                                </a>
+                            
+                                <a href="https://github.com/beibinyang/beibinyang.github.io" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">beibinyang.github.io</h3>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                                            <i class="fa-solid fa-star mr-1"></i>
+                                            0
+                                        </span>
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">None</p>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                                        <span>None</span>
+                                        <span class="update-date" data-date="2026-07-27T09:14:47Z">更新于 2026-07-27</span>
                                     </div>
                                 </a>
                             
@@ -547,21 +598,6 @@
                                     </div>
                                 </a>
                             
-                                <a href="https://github.com/beibinyang/2025-blog-public" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">2025-blog-public</h3>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                                            <i class="fa-solid fa-star mr-1"></i>
-                                            0
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">开源blog，让你不写代码就开始写 blog，管理 blog 内容。无需服务器，无需费用。</p>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                                        <span>TypeScript</span>
-                                        <span class="update-date" data-date="2026-07-26T14:44:10Z">更新于 2026-07-26</span>
-                                    </div>
-                                </a>
-                            
                                 <a href="https://github.com/beibinyang/CloudFlare-ImgBed" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <div class="flex justify-between items-start mb-2">
                                         <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">CloudFlare-ImgBed</h3>
@@ -574,21 +610,6 @@
                                     <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
                                         <span>JavaScript</span>
                                         <span class="update-date" data-date="2026-07-25T08:55:53Z">更新于 2026-07-25</span>
-                                    </div>
-                                </a>
-                            
-                                <a href="https://github.com/beibinyang/docsify" target="_blank" rel="noopener noreferrer" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">docsify</h3>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                                            <i class="fa-solid fa-star mr-1"></i>
-                                            0
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">None</p>
-                                    <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                                        <span>HTML</span>
-                                        <span class="update-date" data-date="2026-07-24T08:16:25Z">更新于 2026-07-24</span>
                                     </div>
                                 </a>
                             
@@ -714,7 +735,7 @@
                         labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
                         datasets: [{
                             label: '代码提交',
-                            data: [0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0],
+                            data: [0, 0, 0, 0, 16, 16, 16, 3, 3, 3, 0, 0],
                             borderColor: isDark ? '#a855f7' : '#6a11cb',
                             backgroundColor: isDark ? 'rgba(168, 85, 247, 0.1)' : 'rgba(106, 17, 203, 0.1)',
                             tension: 0.4,
