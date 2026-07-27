@@ -4,16 +4,8 @@
 
 ## 关于我
 
-我是一名热爱编程的开发者，喜欢探索新技术和解决各种有趣的问题。
+北冰洋
 
-## 技术栈
-
-- Python
-- JavaScript
-- HTML/CSS
-- Flask
-- Vue.js
-- React
 
 ## 项目展示
 
